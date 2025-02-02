@@ -1,0 +1,51 @@
+#include <stdio.h>
+
+int binarySearch(int list[], int target, int size);
+
+int main() {
+    int size, i;
+    int target;
+
+    printf("Enter size: ");
+    scanf("%d", &size);
+
+    int list[size];
+
+    printf("Enter elements: ");
+    for (i = 0; i < size; i++) {
+        scanf("%d", &list[i]);
+    }
+
+    printf("Enter value to search: ");
+    scanf("%d", &target);
+
+    int result = binarySearch(list, target, size);
+
+    if (result != -1) {
+        printf("Element found at index %d\n", result);
+    } else {
+        printf("Element not found\n");
+    }
+
+    return 0;
+}
+
+int binarySearch(int list[], int target, int size) {
+    int low = 0;
+    int high = size - 1;
+    int mid;
+
+    while (low <= high) {
+        mid = (low + high) / 2;
+
+        if (list[mid] == target) {
+            return mid;
+        } else if (list[mid] > target) {
+            high = mid - 1;
+        } else {
+            low = mid + 1;
+        }
+    }
+
+    return -1; // Return -1 if element not found
+}
