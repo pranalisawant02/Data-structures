@@ -1,0 +1,36 @@
+#include<stdio.h>
+int linear_search(int arr[],int size,int target)
+{
+	int i;
+	for(i=0;i<size;i++)
+	{
+		if(arr[i] == target)
+		{
+			return i;
+		}
+	}
+}
+int main()
+{
+	int i,size,target,status;
+	printf("enter the size of array:");
+	scanf("%d",&size);
+	int arr[size];
+	printf("enter the elements:");
+	for(i=0;i<size;i++)
+	{
+		scanf("%d",&arr[i]);
+	}
+	
+	printf("enter the number that you want to search:");
+	scanf("%d",&target);
+	
+	status = linear_search(arr,size,target);
+	if(status < size)
+	{
+		printf("the index of %d is : %d",target,status);
+	} 
+	else{
+		printf("the element does not exist");
+	}
+}
