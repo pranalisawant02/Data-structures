@@ -1,0 +1,280 @@
+#include<stdio.h>
+#include<stdlib.h>
+struct node{
+	int data;
+	struct node*next;
+};
+
+struct node*create_node(int data)
+{
+	struct node*node;
+	node = (struct node*)malloc(sizeof(struct node));
+	node->data = data;
+	node->next = NULL;
+	return node;
+}
+
+void attachbegin(struct node**hptr)
+{
+	int data;
+	printf("enter the data for insertion:");
+	scanf("%d",&data);
+	
+	struct node*nnode;
+    nnode = create_node(data);
+	if(*hptr == NULL)
+	{
+		*hptr = nnode;
+	}
+	else{
+		nnode->next = *hptr;
+		*hptr = nnode;
+	}
+}
+
+void attachend(struct node**hptr)
+{
+	int data;
+	printf("enter the data for insertion:");
+	scanf("%d",&data);
+	struct node*nnode;
+	nnode = create_node(data);
+	if(*hptr == NULL)
+	{
+		*hptr = nnode;
+	}
+	else{
+		struct node*last = *hptr;
+		while(last->next != NULL)
+		{
+			last = last->next;
+		}
+		last->next = nnode;
+	}
+}
+
+
+void attach_middle(struct node**hptr,int val)
+{
+	int data;
+	printf("enter the data for insertion:");
+	scanf("%d",&data);	
+	struct node*nnode;
+	nnode = create_node(data);
+	struct node*cnode;
+
+	if(*hptr == NULL)
+	{
+		printf("list is empty");
+		return 0;
+	}
+	else{
+		cnode = *hptr;
+		while(cnode != NULL)
+		{
+			if(cnode->data == val)
+			{
+				nnode->next = cnode->next;
+				cnode->next = nnode;
+				break;
+			}
+			else{
+				cnode = cnode->next;
+			}
+		}
+	}
+	printf("Value %d not found in the list.\n", val);
+}
+
+void detachend(struct node**hptr)
+{
+	struct node*fnode;
+	struct node*cnode;
+	struct node*last_node;
+	struct node*prev_node;
+	if(*hptr == NULL)
+	{
+		printf("list is empty\n");
+		return 0 ;
+	}
+	else{
+		fnode = *hptr;
+		cnode = fnode;
+		while(cnode->next != NULL)
+		{
+			cnode = cnode->next;
+		}
+		last_node = cnode;
+		cnode = fnode;
+		while(cnode->next != last_node)
+		{
+			cnode = cnode->next;
+		}
+		prev_node = cnode;
+		prev_node->next = NULL;
+	}
+}
+
+void detachbegin(struct node**hptr)
+{
+	struct node*fnode;
+	if(*hptr == NULL)
+	{
+		return 0 ;
+	}
+	else{
+		fnode = *hptr;
+		fnode = fnode->next;
+		free(fnode);
+	}
+}
+
+void detachmiddle(struct node**hptr,int pos)
+{
+	struct node*cnode = *hptr;
+	struct node*prev_node = *hptr;
+	if(*hptr == NULL)
+	{
+		return 0;
+	}
+	else if(pos == 1)
+	{
+		*hptr = cnode->next;
+		free(cnode);
+		cnode = NULL;
+	}
+	else{
+		while(pos != 1)
+		{
+			prev_node = cnode;
+			cnode = cnode->next;
+			pos--;
+			
+		}
+		prev_node->next = cnode->next;
+		free(cnode);
+		cnode = NULL;
+	}
+}
+
+void traverse(struct node*hptr)
+{
+	struct node*cnode;
+	if(hptr != NULL)
+	{
+		cnode = hptr;
+	}
+	while(cnode != NULL)
+	{
+		printf("%d",cnode->data);
+		cnode = cnode->next;
+	}
+}
+
+void search(struct node*hptr)
+{
+	int data;
+	printf("enter the data for search:");
+	scanf("%d",&data);
+	struct node*cnode;
+	if(hptr != NULL)
+	{
+		cnode = hptr;
+		while(cnode!=NULL)
+		{
+			if(cnode->data == data)
+			{
+				printf("the data is found\n");
+				break;
+			}
+			cnode = cnode->next;
+		}
+		if(cnode == NULL)
+		{
+			printf("data is not found\n");
+		}
+		
+	}
+}
+
+void print_list(struct node*hptr)
+{
+	while(hptr != NULL)
+	{
+		printf("%d\t",hptr->data);
+		hptr = hptr->next;
+	}
+	printf("\n");
+}
+
+int main()
+{
+	int choice,val,status,pos;
+	struct node*head;
+	head = create_node(1);
+	head->next = create_node(2);
+	head->next->next = create_node(3);
+	head->next->next->next = create_node(4);
+	head->next->next->next->next = create_node(5);
+	
+	
+	printf("\n1.attach begin \n2.attach end \n3.attach middle \n4.traverse \n5.search \n6.detach from end \n7.detach from begin \n8.detach from middle \n");
+	
+	printf("enter your choice:");
+	scanf("%d",&choice);
+	
+	switch(choice)
+	{
+		case 1 :printf("before inserting the data\n");
+				print_list(head);
+				attachbegin(&head);
+				printf("\nafter inserting the data\n"); 
+				print_list(head);
+				break;
+				
+		case 2 :printf("before inserting the data\n");
+				print_list(head);
+				attachend(&head);
+				printf("\nafter inserting the data\n"); 
+				print_list(head);
+				 break;
+				 
+		case 3 :printf("enter the value from list:");
+		        scanf("%d",&val);	
+				attach_middle(&head,val);
+				printf("\nafter inserting the data\n"); 
+				print_list(head);
+				
+		case 4 :printf("after traversing the list \n");
+		        print_list(head);		
+				break;
+				
+		case 5 :search(head);
+		        break;	
+				
+		case 6 :printf("before deleing the data\n");
+				print_list(head);
+				detachend(&head);
+				printf("\nafter deleting the data\n"); 
+				print_list(head);
+			    break;	
+				
+		case 7 :printf("before deleing the data\n");
+				print_list(head);
+				detachbegin(&head);
+				printf("\nafter deleting the data\n"); 
+				print_list(head);
+				break;
+				
+		case 8 :printf("enter the position:");
+                scanf("%d",&pos);
+                detachmiddle(&head,pos);
+                printf("\nafter deleting the data\n"); 
+				print_list(head);
+				break;
+                				
+		default :printf("operation failed\n");			 
+				 		 		
+	}
+	
+}
